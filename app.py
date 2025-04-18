@@ -15,6 +15,7 @@ import openpyxl  # Import for Excel handling
 import tempfile
 import shutil
 from functools import wraps
+from flask_frozen import Freezer  # Исправлено на flask_frozen
 
 from models import db, User, Zayavka
 from utils import generate_word_report, generate_pdf_report
@@ -39,6 +40,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+oauth = OAuth(app)  # Инициализация OAuth
+
 app.config['GOOGLE_CLIENT_ID'] = os.getenv('GOOGLE_CLIENT_ID')
 app.config['GOOGLE_CLIENT_SECRET'] = os.getenv('GOOGLE_CLIENT_SECRET')
 app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
@@ -53,6 +56,8 @@ google = oauth.register(
         'scope': 'openid email profile',
     }
 )
+
+freezer = Freezer(app)  # Initialize Freezer
 
 # Role-based access control decorator
 def role_required(role):
@@ -600,6 +605,9 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     
+    # Uncomment the following line to freeze the app
+    # freezer.freeze()  # Generate static files
+
     # ⚠️ НЕ запускай app.run() на Render — это делает gunicorn
     # app.run(debug=True)  ← ЭТО УДАЛЯЕМ
 
