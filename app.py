@@ -594,8 +594,12 @@ def get_status_color(status):
 
 
 if __name__ == '__main__':
+    from flask_migrate import Migrate
+    migrate = Migrate(app, db)
+    
     with app.app_context():
-        from flask_migrate import Migrate
-        migrate = Migrate(app, db)  # Initialize migration
-        db.create_all()  # Create all database tables
-    app.run(debug=True)
+        db.create_all()
+    
+    # ⚠️ НЕ запускай app.run() на Render — это делает gunicorn
+    # app.run(debug=True)  ← ЭТО УДАЛЯЕМ
+
