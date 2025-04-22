@@ -23,7 +23,7 @@ from utils import generate_word_report, generate_pdf_report
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
-app = Flask(__name__, static_folder='static', template_folder='templates')
+app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['UPLOAD_FOLDER'] = 'uploads'
